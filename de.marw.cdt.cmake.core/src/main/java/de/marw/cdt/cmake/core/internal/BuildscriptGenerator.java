@@ -12,6 +12,7 @@ package de.marw.cdt.cmake.core.internal;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -329,12 +330,6 @@ public class BuildscriptGenerator implements IManagedBuilderMakefileGenerator2 {
     String errMsg;
     List<String> argList = buildCommandline(srcFolder.getLocation());
     argList = wrapArgsForEnvScript(argList);
-    try {
-      console.getErrorStream().write(("#### Arrays.toString(String[] args)="
-          + Arrays.toString(argList.toArray())).getBytes());
-      console.getErrorStream().write('\n');
-    } catch (IOException e1) {
-    }
 
     // extract cmake command
     final String cmd = argList.remove(0);
@@ -407,20 +402,38 @@ public class BuildscriptGenerator implements IManagedBuilderMakefileGenerator2 {
 
     final ICdtVariableManager mngr = CCorePlugin.getDefault().getCdtVariableManager();
     envSetterScript = mngr.resolveValue(envSetterScript, "", "", cfgd);
-    if (/*true|| */System.getProperty("os.name").toLowerCase().startsWith("windows")) {
+    if (
+//        true||
+        System.getProperty("os.name").toLowerCase().startsWith("windows")) {
       // host OS is windows
+      /*
+       * TODO detect whether the build runs in a container and which OS runs the build
+       * ContainerCommandLauncher.CONTAINER_BUILD_ENABLED property ... assume windows runs the build for now
+       */
 
-      // TODO detect whether the build runs in a container and which OS runs the build
-      // ContainerCommandLauncher.CONTAINER_BUILD_ENABLED property
-      // assume windows runs the build for now
-      List<String> result = new ArrayList<>(Arrays.asList("cmd.exe", "/c"));
-      List<String> script = new ArrayList<>(Arrays.asList(envSetterScript, "&"));
-      script.addAll(cmakeCommandline);
-      // quote args that have spaces..
-      script = script.stream().map(a -> a.contains(" ") ? "\"" + a + "\"" : a).collect(Collectors.toList());
-      // combine to a single argument and quote the combined arg
-      String scriptArg = String.join(" ", script) ;
-      result.add(scriptArg);
+      // create a batch file that invokes the env-setter-script and cmake
+      File batFile;
+      {
+        String id = cfgd.getId();
+        int idx= id.lastIndexOf('.');
+        String sid = idx == -1 ? id : id.substring(idx + 1);
+        batFile = new File(new File(System.getProperty("java.io.tmpdir")), "cmake4eclipse-" + sid + ".bat");
+        batFile.deleteOnExit();
+      }
+      List<String> result = new ArrayList<>(Arrays.asList("cmd.exe", "/c", batFile.getPath()));
+      // write batch file...
+      try (PrintWriter wr= new PrintWriter(batFile)){
+        wr.printf("\"%s\" || exit /b%n", envSetterScript);
+        // quote args that have spaces..
+        List<String> cmakeCall = cmakeCommandline.stream().map(a -> a.contains(" ") ? "\"" + a + "\"" : a).collect(Collectors.toList());
+        // combine to a single argument and quote the combined arg
+        String cmakecmd = String.join(" ", cmakeCall) ;
+        wr.print(cmakecmd);
+        wr.println(" || exit /b");
+      } catch (IOException e) {
+        throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+            "Failed to write file " + batFile, e));
+      }
       return result;
     }
 
