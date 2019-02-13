@@ -420,16 +420,17 @@ public class BuildscriptGenerator implements IManagedBuilderMakefileGenerator2 {
         batFile = new File(new File(System.getProperty("java.io.tmpdir")), "cmake4eclipse-" + sid + ".bat");
         batFile.deleteOnExit();
       }
-      List<String> result = new ArrayList<>(Arrays.asList("cmd.exe", "/c", batFile.getPath()));
+      List<String> result = new ArrayList<>();
+      result.add(batFile.getPath());
       // write batch file...
       try (PrintWriter wr= new PrintWriter(batFile)){
-        wr.printf("\"%s\" || exit /b%n", envSetterScript);
+        wr.printf("call \"%s\"", envSetterScript);
         // quote args that have spaces..
         List<String> cmakeCall = cmakeCommandline.stream().map(a -> a.contains(" ") ? "\"" + a + "\"" : a).collect(Collectors.toList());
         // combine to a single argument and quote the combined arg
         String cmakecmd = String.join(" ", cmakeCall) ;
-        wr.print(cmakecmd);
-        wr.println(" || exit /b");
+        wr.printf(" && %s%n", cmakecmd);
+        wr.println("exit /b %%errorlevel%%%n");
       } catch (IOException e) {
         throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
             "Failed to write file " + batFile, e));
