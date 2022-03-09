@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.propertyPages">
+        <page
+              category="org.eclipse.cdt.managedbuilder.ui.properties.Page_head_build"
+              class="de.marw.cmake4eclipse.mbs.ui.CMakePropertyPage"
+              id="cmake4eclipse.mbs.ui.CMakePropertyPage"
+              name="Cmake4eclipse">
+         <enabledWhen>
+              <adapt type="org.eclipse.core.resources.IProject">
+                 <test
+                       property="org.eclipse.core.resources.projectNature"
+                       value="org.eclipse.cdt.managedbuilder.core.managedBuildNature">
+                 </test>
+           </adapt>
+         </enabledWhen>
+         <keywordReference
+               id="de.marw.cmake4eclipse.mbs.keyword.cmake">
+         </keywordReference>
+         <keywordReference
+               id="de.marw.cmake4eclipse.mbs.keyword.cdt">
+         </keywordReference>
+        </page>
+  </extension>
+   <extension
+         point="org.eclipse.cdt.ui.cPropertyTab">
+      <tab
+            class="de.marw.cmake4eclipse.mbs.ui.CMakePropertyTab"
+            name="&amp;General"
+            parent="de.marw.cmake4eclipse.mbs.ui.CMakePropertyPage">
+      </tab>
+      <tab
+            class="de.marw.cmake4eclipse.mbs.ui.CMakeSymbolsTab"
+            helpId="de.marw.cmake4eclipse.mbs.ui.t_cmake_symbols_general"
+            name="&amp;CMake cache entries"
+            parent="de.marw.cmake4eclipse.mbs.ui.CMakePropertyPage">
+      </tab>
+   </extension>
+ <extension
+       point="org.eclipse.cdt.ui.LanguageSettingsProviderAssociation">
+    <class-association
+          class="de.marw.cmake4eclipse.mbs.internal.JsonCompilationDatabaseParser"
+          icon="icons/CMakeLogo.gif"
+          page="de.marw.cmake4eclipse.mbs.ui.JsonCompilationDatabaseParserPage"
+          ui-clear-entries="false"
+          ui-edit-entries="false">
+    </class-association>
+ </extension>
+ <extension point="org.eclipse.help.toc">
+    <toc file="doc/toc.xml" primary="true"/>
+ </extension>
+ <extension
+       point="org.eclipse.help.contexts">
+    <contexts
+          file="doc/help_contexts.xml">
+    </contexts>
+ </extension>
+ <extension
+       point="org.eclipse.ui.keywords">
+    <keyword
+          id="de.marw.cmake4eclipse.mbs.keyword.cdt"
+          label="CDT">
+    </keyword>
+    <keyword
+          id="de.marw.cmake4eclipse.mbs.keyword.cmake"
+          label="CMake">
+    </keyword>
+ </extension>
+ <extension
+       point="org.eclipse.ui.preferencePages">
+    <page
+          category="org.eclipse.cdt.ui.preferences.CPluginPreferencePage"
+          class="de.marw.cmake4eclipse.mbs.ui.preferences.CMakePreferencePage"
+          id="de.marw.cmake4eclipse.mbs.ui.preferences.CMakePreferencePage"
+          name="Cmake4eclipse">
+    </page>
+    <page
+          category="de.marw.cmake4eclipse.mbs.ui.preferences.CMakePreferencePage"
+          class="de.marw.cmake4eclipse.mbs.ui.preferences.BuildToolkitsPreferencePage"
+          id="de.marw.cmake4eclipse.mbs.ui.toolchains"
+          name="Build Tool Kits">
+    </page>
+ </extension>
+ <extension
+       point="org.eclipse.ui.preferenceTransfer">
+    <transfer
+          icon="platform:/plugin/org.eclipse.cdt.ui/icons/view16/c_pers.gif"
+          id="de.marw.cmake4eclipse.mbs.ui.transfer"
+          name="Cmake4eclipse Preferences">
+       <mapping
+             scope="instance">
+          <entry
+                node="de.marw.cmake4eclipse.mbs">
+          </entry>
+       </mapping>
+       <description>C/C++ > Cmake4eclipse preferences.
+       </description>
+    </transfer>
+ </extension>
+</plugin>

@@ -1,8 +1,28 @@
 # Cmake4eclipse Change Log
 
+## 3.0.2 (2022-02-07)
+### Changes
+- Closed #167: bison from <MSYS2_ROOT>\usr\bin fails when run for projects targeting mingw32 on windows.
+- Add support to export and import Cmake4eclipse workbench preferences.
+
+## 3.0.1 (2022-01-31)
+### Changes
+- Closed #164: NPE in BuildToolKitUtil.getEffectiveCMakeGenerator() when workspace preferences for cmake4eclipse has never been saved.
+
+## 3.0.0 (2022-01-17)
+### Changes
+- Closed #157: For CDT indexer support, switch to the compilation database parser coming with CDT.
+- Closed #158: Move machine specific settings from project to workbench preferences.
+Compatibility Note: Eclipse projects creating with earlier version of cmake4eclipse should continue to work but
+users are strongly recommended to switch project properties to use the new `CMake driven` tool chain.
+
+#### System Requirements
+- CDT v 10.5 or newer and Eclipse v 2021-12 or newer
+- Java 11 or newer
+
 ## 2.1.4 (2021-03-30)
 ### Changes
--Closed #147: Retain order of compiler-built-in include directories.
+- Closed #147: Retain order of compiler-built-in include directories.
 
 ## 2.1.3 (2020-11-17)
 ### Changes
@@ -15,7 +35,7 @@
 
 ## 2.1.1 (2020-03-10)
 ### Changes
-- Fix: Missing bundles for ARM, HPE-nonstop and Intel support in the `cmake4eclispe Extras` section in the repository.
+- Fix: Missing bundles for ARM, HPE-nonstop and Intel support in the `cmake4eclipse Extras` section in the repository.
 - Raised severity level to WARNING for markers related to indexer support.
 - Changed license to EPL 2.0
 

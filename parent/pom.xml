@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>de.marw.cdt.cmake</groupId>
-  <artifactId>cmake-parent</artifactId>
+  <groupId>de.marw.cmake4eclipse</groupId>
+  <artifactId>parent</artifactId>
   <version>1.1.0</version>
   <packaging>pom</packaging>
 
@@ -34,10 +32,11 @@
   </developers>
 
   <modules>
-    <module>../releng/de.marw.cdt.cmake-target</module>
+    <module>../releng/targetplatform</module>
+    <module>../de.marw.cmake4eclipse.mbs</module>
+    <module>../de.marw.cmake4eclipse.mbs.ui</module>
     <module>../de.marw.cmake.cdt</module>
     <module>../de.marw.cmake.cdt.tests</module>
-    <module>../de.marw.cdt.cmake.core</module>
     <module>../de.marw.cmake.cdt.lsp.arm</module>
     <module>../de.marw.cmake.cdt.lsp.arm.tests</module>
     <module>../de.marw.cmake.cdt.lsp.hpenonstop</module>
@@ -47,8 +46,8 @@
     <module>../de.marw.cmake.cdt.lsp.nvidia.tests</module>
     <module>../de.marw.cmake.cdt.lsp.microsoft</module>
     <module>../de.marw.cmake.cdt.lsp.microsoft.tests</module>
-    <module>../de.marw.cdt.cmake-feature</module>
-    <module>../releng/de.marw.cdt.cmake-repo</module>
+    <module>../de.marw.cmake4eclipse.feature</module>
+    <module>../releng/repo</module>
   </modules>
 
   <scm>
@@ -61,9 +60,9 @@
   </issueManagement>
 
   <properties>
-    <tycho-version>1.7.0</tycho-version>
+    <tycho-version>2.4.0</tycho-version>
     <platform.version>1.0.1</platform.version>
-    <java.source>1.8</java.source>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
   <dependencyManagement>
@@ -110,9 +109,6 @@
           <artifactId>tycho-compiler-plugin</artifactId>
           <version>${tycho-version}</version>
           <configuration>
-            <source>${java.source}</source>
-            <target>${java.source}</target>
-            <encoding>UTF-8</encoding>
             <useProjectSettings>false</useProjectSettings>
           </configuration>
         </plugin>
@@ -120,11 +116,6 @@
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.3</version>
-          <configuration>
-            <source>${java.source}</source>
-            <target>${java.source}</target>
-            <encoding>UTF-8</encoding>
-          </configuration>
         </plugin>
 
         <plugin>
@@ -138,10 +129,18 @@
         <plugin>
           <artifactId>maven-install-plugin</artifactId>
           <version>2.5.2</version>
+          <!-- don't pollute repositories with useless stuff -->
+          <configuration>
+            <skip>true</skip>
+          </configuration>
         </plugin>
         <plugin>
           <artifactId>maven-deploy-plugin</artifactId>
           <version>2.8.2</version>
+          <!-- don't pollute repositories with useless stuff -->
+          <configuration>
+            <skip>true</skip>
+          </configuration>
         </plugin>
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
@@ -176,7 +175,7 @@
         </plugin>
         <plugin>
           <groupId>org.eclipse.tycho.extras</groupId>
-          <artifactId>tycho-source-feature-plugin</artifactId>
+          <artifactId>tycho-feature-source-plugin</artifactId>
           <version>${tycho-version}</version>
         </plugin>
         <plugin>
@@ -236,19 +235,14 @@
           <configuration>
             <target>
               <artifact>
-                <groupId>de.marw.cdt.cmake</groupId>
-                <!-- use file de.marw.cdt.cmake-target.target -->
-                <artifactId>de.marw.cdt.cmake-target</artifactId>
+                <groupId>de.marw.cmake4eclipse</groupId>
+                <!-- use file targetplatform.target -->
+                <artifactId>targetplatform</artifactId>
                 <version>${platform.version}</version>
               </artifact>
             </target>
 
             <environments>
-              <environment>
-                <os>linux</os>
-                <ws>gtk</ws>
-                <arch>x86</arch>
-              </environment>
               <environment>
                 <os>linux</os>
                 <ws>gtk</ws>
@@ -262,17 +256,7 @@
               <environment>
                 <os>win32</os>
                 <ws>win32</ws>
-                <arch>x86</arch>
-              </environment>
-              <environment>
-                <os>win32</os>
-                <ws>win32</ws>
                 <arch>x86_64</arch>
-              </environment>
-              <environment>
-                <os>macosx</os>
-                <ws>cocoa</ws>
-                <arch>x86</arch>
               </environment>
               <environment>
                 <os>macosx</os>
@@ -310,8 +294,8 @@
                     <version>3.3.9</version>
                   </requireMavenVersion>
                   <requireJavaVersion>
-                    <!-- our project README states we require 1.8 or newer at runtime -->
-                    <version>[1.8,1.9)</version>
+                    <!-- our project README states we require 11 or newer at runtime -->
+                    <version>[11,)</version>
                   </requireJavaVersion>
                 </rules>
               </configuration>
@@ -328,15 +312,6 @@
       <build>
         <pluginManagement>
           <plugins>
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-compiler-plugin</artifactId>
-              <configuration>
-                <!-- lines,source required for readable stack traces -->
-                <debuglevel>lines,source</debuglevel>
-                <optimize>true</optimize>
-              </configuration>
-            </plugin>
             <plugin>
               <groupId>org.eclipse.tycho</groupId>
               <artifactId>tycho-compiler-plugin</artifactId>

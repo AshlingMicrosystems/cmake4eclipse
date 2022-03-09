@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.cdt.managedbuilder.core.buildDefinitions">
+      <managedBuildRevision
+            fileVersion="4.0.0">
+      </managedBuildRevision>
+         <targetPlatform
+               archList="all"
+               binaryParser="org.eclipse.cdt.core.GNU_ELF;org.eclipse.cdt.core.ELF;org.eclipse.cdt.core.PE64"
+               id="cmake4eclipse.mbs.targetPlatform.any"
+               name="Any Platform"
+               osList="all">
+         </targetPlatform>
+         <tool
+               command="&lt;ignored by cmake&gt;"
+               commandLinePattern="&lt;ignored by cmake&gt;"
+               customBuildStep="true"
+               icon="icons/CMakeLogo.gif"
+               id="cmake4eclipse.mbs.tool.dummy"
+               name="CMake">
+                     <inputType
+                           id="cmake4eclipse.mbs.inputType.c"
+                           superClass="cdt.managedbuild.tool.gnu.c.compiler.input">
+                     </inputType>
+                     <inputType
+                           id="cmake4eclipse.mbs.inputType.cpp"
+                           superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input">
+                     </inputType>
+                     <option
+                           id="cmake4eclipse.mbs.option.dummy"
+                           isAbstract="false"
+                           resourceFilter="project"
+                           valueType="includePath">
+                     </option>
+         </tool>
+         <toolChain
+               errorParsers="org.eclipse.cdt.core.CWDLocator;org.eclipse.cdt.core.GmakeErrorParser;org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GLDErrorParser"
+               id="cmake4eclipse.mbs.toolchain.cmake"
+               languageSettingsProviders="cmake4eclipse.lsp.CompileCommandsJsonParser"
+               name="CMake driven">
+            <builder
+                  autoBuildTarget="all"
+                  buildRunner="de.marw.cmake4eclipse.mbs.internal.CMakeBuildRunner"
+                  buildfileGenerator="de.marw.cmake4eclipse.mbs.internal.BuildscriptGenerator"
+                  cleanBuildTarget="clean"
+                  id="cmake4eclipse.mbs.builder"
+                  ignoreErrCmd="$&lt;cmake4eclipse_dyn&gt;"
+                  incrementalBuildTarget="all"
+                  name="CMake Builder"
+                  parallelBuildCmd="$&lt;cmake4eclipse_dyn&gt;"
+                  parallelBuildOn="true"
+                  parallelizationNumber="optimal">
+            </builder>
+            <supportedProperties>
+                <property id="org.eclipse.cdt.build.core.buildType">
+                    <value id="org.eclipse.cdt.build.core.buildType.debug"></value>
+                    <value id="org.eclipse.cdt.build.core.buildType.release"></value>
+                    <value id="cmake4eclipse.mbs.buildType.cmake"></value>
+               </property>
+                <property id="org.eclipse.cdt.build.core.buildArtefactType">
+                    <value id="cmake4eclipse.mbs.buildArtefactType.cmake" />
+                    <value id="org.eclipse.cdt.build.core.buildArtefactType.exe"></value>
+                </property>
+            </supportedProperties>
+            <targetPlatform
+                  id="cmake4eclipse.mbs.targetPlatform.cmake"
+                  superClass="cmake4eclipse.mbs.targetPlatform.any">
+            </targetPlatform>
+            <tool
+                  id="cmake4eclipse.mbs.toolchain.tool.dummy"
+                  superClass="cmake4eclipse.mbs.tool.dummy">
+            </tool>
+         </toolChain>
+         <configuration
+               id="cmake4eclipse.mbs.config.base"
+               languageSettingsProviders="${Toolchain};-de.marw.cmake.cdt.language.settings.providers.CompileCommandsJsonParser;-de.marw.cmake.cdt.language.settings.providers.BuiltinsCompileCommandsJsonParser;-org.eclipse.cdt.ui.UserLanguageSettingsProvider;-org.eclipse.cdt.core.ReferencedProjectsLanguageSettingsProvider;-org.eclipse.cdt.managedbuilder.core.MBSLanguageSettingsProvider;-org.eclipse.cdt.managedbuilder.core.GCCBuildCommandParser">
+               
+         </configuration>
+         <projectType
+               buildArtefactType="cmake4eclipse.mbs.buildArtefactType.cmake"
+               id="cmake4eclipse.mbs.projectType">
+            <configuration
+                  buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug"
+                  id="cmake4eclipse.mbs.config.debug"
+                  name="Debug"
+                  parent="cmake4eclipse.mbs.config.base">
+               <toolChain 
+                    id="cmake4eclipse.mbs.config.debug.toolChain"
+                    superClass="cmake4eclipse.mbs.toolchain.cmake">
+               </toolChain>
+            </configuration>
+            <configuration
+                  description="Default coming from cmake"
+                  id="cmake4eclipse.mbs.config.cmake"
+                  name="Default"
+                  parent="cmake4eclipse.mbs.config.base">
+               <toolChain
+                     id="cmake4eclipse.mbs.config.cmake.toolChain"
+                     superClass="cmake4eclipse.mbs.toolchain.cmake">
+               </toolChain>
+            </configuration>
+            <configuration
+                  buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release"
+                  id="cmake4eclipse.mbs.config.release"
+                  name="Release"
+                  parent="cmake4eclipse.mbs.config.base">
+               <toolChain
+                     id="cmake4eclipse.mbs.config.release.toolChain"
+                     superClass="cmake4eclipse.mbs.toolchain.cmake">
+               </toolChain>
+            </configuration>
+         </projectType>
+ </extension>
+ <extension
+         point="org.eclipse.cdt.managedbuilder.core.buildProperties">
+    <propertyValue
+            property="org.eclipse.cdt.build.core.buildType"
+            id="cmake4eclipse.mbs.buildType.cmake"
+            name="CMake Defaults"/>
+    <propertyValue
+            property="org.eclipse.cdt.build.core.buildArtefactType"
+            id="cmake4eclipse.mbs.buildArtefactType.cmake"
+            name="Cmake4eclipse"/>
+   </extension>
+ <extension
+       point="org.eclipse.cdt.core.LanguageSettingsProvider">
+    <provider
+          class="de.marw.cmake4eclipse.mbs.internal.JsonCompilationDatabaseParser"
+          id="cmake4eclipse.lsp.CompileCommandsJsonParser"
+          name="CMake Compilation DB"
+          prefer-non-shared="true">
+    </provider>
+ </extension>
+ <extension
+       point="org.eclipse.core.runtime.preferences">
+    <initializer
+          class="de.marw.cmake4eclipse.mbs.internal.PreferenceInitializer">
+    </initializer>
+ </extension>
+ <extension
+       point="org.eclipse.cdt.core.CBuildConsole">
+    <CBuildConsole
+          class="de.marw.cmake4eclipse.mbs.console.CMakeConsole"
+          id="cmake4eclipse.mbs.cmakeConsole">
+    </CBuildConsole>
+ </extension>
+ <extension
+       point="org.eclipse.core.variables.dynamicVariables">
+    <variable
+          description="The value of the PATH property of cmake4eclipse`s overwriting Build Tool Kit, if any. Otherwise the value of the PATH environment variable"
+          name="cmake4eclipse_btk_PATH"
+          resolver="de.marw.cmake4eclipse.mbs.internal.BTKPathDynamicVariableResolver"
+          supportsArgument="false">
+    </variable>
+ </extension>
+</plugin>

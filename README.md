@@ -1,7 +1,7 @@
 [Change Log](CHANGELOG.md) | 
 [Install...](#installation) | 
 [![Mailing-list](https://img.shields.io/badge/Mailing-list-blue.svg)](http://groups.google.com/d/forum/cmake4eclipse-users)
-[![Build Status](https://travis-ci.org/15knots/cmake4eclipse.svg?branch=master)](https://travis-ci.org/15knots/cmake4eclipse)
+[![Build Status](https://github.com/15knots/cmake4eclipse/actions/workflows/maven.yml/badge.svg)](https://github.com/15knots/cmake4eclipse/actions/workflows/maven.yml)
 [![GitHub issues](https://img.shields.io/github/issues/15knots/cmake4eclipse.svg)](https://github.com/15knots/cmake4eclipse/issues)
 
 
@@ -15,23 +15,20 @@ Its <a id="pc">*Primary claim*</a> is: Co-workers should be able to just **check
 1. Take the CMakeLists.txt as the source of truth.
    - Auto-detect the actual build tool to invoke: make, ninja, nmake, MinGW make, MSYS make, ...
    - Easy project configuration regarding code completion, symbol-declaration lookup and macro-value tool-tips in the source editor.
-     - Feed include paths and pre-processor symbols from cmake to the CDT-Indexer (CMAKE_EXPORT_COMPILE_COMMANDS Parser).
-     - Retrieve compiler-built-in pre-processor symbols and include paths by interrogating the actual compiler and feed these to the CDT-Indexer (CMAKE_EXPORT_COMPILE_COMMANDS Compiler Built-ins). Well, at least as the compiler supports that (GNU C and `nvcc` CUDA compilers do so).
-## Screenshots
-Screenshots can be found at the <a href="https://marketplace.eclipse.org/content/cmake4eclipse#group-screenshots" title="Screenshots">Eclipse Marketplace</a>.
+     - Feed include paths and pre-processor symbols from cmake to the CDT-Indexer (CMake Compilation DB).
+     - Retrieve compiler-built-in pre-processor symbols and include paths by interrogating the actual compiler and feed these to the CDT-Indexer (CMake Compilation DB). Well, at least as the compiler supports that (GNU C and `nvcc` CUDA compilers do so).
 
 ## Quick start
- 1. If you do not have any existing code, check out the [Sample Projects](https://github.com/15knots/cmake4eclipse-sample-projects), chose one and fill in your code.
- 1. If you have an existing C/C++ project code, inside Eclipse, goto `Help:Help Contents`, then read the `Cmake4eclipse User Guide:Getting Started` node to adjust your project settings.
+ 1. If you do not have any existing code, check out the [Sample Projects](https://github.com/15knots/cmake4eclipse-sample-projects), choose one and fill in your code.
+ 1. If you have an existing C/C++ project code, inside Eclipse, goto `Help:Help Contents`, then read the `Cmake4eclipse User Guide:Tasks` nodes.
  
 ---
 ## License
-The plugin is licensed under the <a href="http://www.eclipse.org/legal/epl-v10.html">Eclipse Public License Version 1.0 ("EPL")</a>.
+The plugin is licensed under the <a href="https://www.eclipse.org/legal/epl-2.0/">Eclipse Public License Version 2.0 ("EPL-2.0")</a>.
 
 ## System Requirements
-CDT v 8.7 or newer and Eclipse v 4.5 (Mars) or newer
-
-Java 8 or newer
+- CDT v 10.5 or newer and Eclipse v 2021-12 or newer.
+- Java 11 or newer.
 
 ## Installation
 The easiest way is to drag this: <a href="http://marketplace.eclipse.org/marketplace-client-intro?mpc_install=2318334" class="drag" title="Drag to your running Eclipse workbench to install cmake4eclipse">
@@ -44,15 +41,15 @@ This composite update site is for use in a Eclipse workbench and contains the la
 https://raw.githubusercontent.com/15knots/cmake4eclipse/master/releng/comp-update/.
 
 ### p2 Repositories
-Tool integrators will find each release at [bintray](https://bintray.com/15knots/p2-zip/cmake4eclipse#files).
+Tool integrators will find each release at [cloudsmith](https://cloudsmith.io/~15knots/repos/p2-zip/packages/).
 Each release is provided as a stand-alone zipped p2 repository and can be consumed in a PDE target platform. To add one
 of these repositories to your target platform, add a **Software Site** and enter a URL for the location as
-jar:https://dl.bintray.com/15knots/p2-zip/cmake4eclipse-2.0.1.zip!/ (note the leading `jar:` and the trailing
-`!/`).
+jar:https://dl.cloudsmith.io/public/15knots/p2-zip/raw/files/cmake4eclipse-3.0.0.zip!/ 
+(note the leading `jar:` and the trailing `!/`).
 
 If you work at a company that wants to ship cmake4eclipse with your product, please consider to mirror the zip file internally
-and reference the company-internal location in your target definition. This will help to reduce the traffic on bintray and
-make your product builds immune to downtimes on bintray.
+and reference the company-internal location in your target definition. This will help to reduce the traffic on cloudsmith and
+make your product builds immune to downtimes on cloudsmith.
 
 ## Debug and Build
 This project uses Apache maven as its build system.
