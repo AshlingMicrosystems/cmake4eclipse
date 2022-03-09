@@ -8,7 +8,9 @@
  *******************************************************************************/
 package de.marw.cmake4eclipse.mbs.internal;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.core.runtime.Status;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -56,5 +58,39 @@ public class Activator extends Plugin {
    */
   public static Activator getDefault() {
     return plugin;
+  }
+  
+  /**
+   * Logs an internal error with the specified message.
+   * 
+   * @param message the error message to log
+   */
+  public static void logErrorMessage(String message) {
+      // this message is intentionally not internationalized, as an exception may
+      // be due to the resource bundle itself
+      log(newErrorStatus(IStatus.ERROR, "Internal message logged from Debug UI: " + message, null)); //$NON-NLS-1$   
+  }
+  
+  /**
+   * Returns a new error status for this plug-in with the given message
+   * 
+   * @param message the message to be included in the status
+   * @param error code
+   * @param exception the exception to be included in the status or <code>null</code> if none
+   * @return a new error status
+   * 
+   * @since 2.0
+   */
+  public static IStatus newErrorStatus(int code, String message, Throwable exception) {
+      return new Status(IStatus.ERROR, Activator.PLUGIN_ID, code, message, exception);
+  }
+  
+  /**
+   * Logs the specified status with this plug-in's log.
+   * 
+   * @param status status to log
+   */
+  public static void log(IStatus status) {
+      getDefault().getLog().log(status);
   }
 }

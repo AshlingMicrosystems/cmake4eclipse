@@ -38,6 +38,7 @@
          <toolChain
                errorParsers="org.eclipse.cdt.core.CWDLocator;org.eclipse.cdt.core.GmakeErrorParser;org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GLDErrorParser"
                id="cmake4eclipse.mbs.toolchain.cmake"
+               configurationEnvironmentSupplier="de.marw.cmake4eclipse.mbs.ashling.util.EnvironmentVariableSupplier"
                languageSettingsProviders="cmake4eclipse.lsp.CompileCommandsJsonParser"
                name="CMake driven">
             <builder
