@@ -19,13 +19,7 @@ public class WindowsPreferences extends AbstractOsPreferences {
   /** Overridden to set a sensible generator. */
   public void reset() {
     super.reset();
-    /*
-	 * <Ashling customization> - GitLab#705 Make Windows Buildscript generator (-G) to Unix Makefiles
-	 */
-    setGenerator(CmakeGenerator.UnixMakefiles);
-    /*
-	 * <Ashling customization>
-	 */
+    setGenerator(CmakeGenerator.MinGWMakefiles);
   }
 
   /**

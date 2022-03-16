@@ -1,10 +1,11 @@
-package de.marw.cmake.cdt.ashling;
+package de.marw.cmake4eclipse.mbs.ashling;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.core.runtime.preferences.InstanceScope;
+
 
 public class PersistentPreferences {
 	// ------------------------------------------------------------------------

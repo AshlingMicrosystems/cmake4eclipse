@@ -1,4 +1,4 @@
-package de.marw.cmake.cdt.ashling.util;
+package de.marw.cmake4eclipse.mbs.ashling.util;
 
 
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
@@ -8,9 +8,8 @@ import org.eclipse.cdt.managedbuilder.envvar.IConfigurationEnvironmentVariableSu
 import org.eclipse.cdt.managedbuilder.envvar.IEnvironmentVariableProvider;
 import org.eclipse.cdt.managedbuilder.macros.IBuildMacroProvider;
 import org.eclipse.core.runtime.Platform;
-
-import de.marw.cmake.cdt.ashling.PersistentPreferences;
-import de.marw.cmake.cdt.internal.Plugin;
+import de.marw.cmake4eclipse.mbs.ashling.PersistentPreferences;
+import de.marw.cmake4eclipse.mbs.internal.Activator;
 
 public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVariableSupplier {
 	
@@ -37,7 +36,7 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 
 	private static class PathEnvironmentVariable implements IBuildEnvironmentVariable {
 		
-		private static String fPluginID="de.marw.cmake.cdt";
+		private static String fPluginID="de.marw.cmake4eclipse.mbs.ui";
 		private static String name = "PATH"; //$NON-NLS-1$
 		private String path;
 
@@ -61,7 +60,7 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 				result = ManagedBuildManager.getBuildMacroProvider().resolveValue(str, "", " ", //$NON-NLS-1$ //$NON-NLS-2$
 						IBuildMacroProvider.CONTEXT_CONFIGURATION, configuration);
 			} catch (Exception e) {
-				Plugin.logErrorMessage("resolveMacros " + e.getMessage());
+				Activator.logErrorMessage("resolveMacros " + e.getMessage());
 			}
 			return result;
 
@@ -85,7 +84,7 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 
 		@Override
 		public int getOperation() {
-			return IBuildEnvironmentVariable.ENVVAR_REMOVE;
+			return IBuildEnvironmentVariable.ENVVAR_REPLACE;
 		}
 
 		@Override

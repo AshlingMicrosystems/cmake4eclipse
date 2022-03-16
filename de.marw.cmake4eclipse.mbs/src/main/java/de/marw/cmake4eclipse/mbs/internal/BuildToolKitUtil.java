@@ -33,7 +33,7 @@ class BuildToolKitUtil {
     if (overwritingToolkit.isPresent()) {
       return overwritingToolkit.map(e -> e.getGenerator()).get();
     } else {
-      String genName = prefs.get(PreferenceAccess.CMAKE_GENERATOR, CmakeGenerator.Ninja.name());
+      String genName = prefs.get(PreferenceAccess.CMAKE_GENERATOR, CmakeGenerator.UnixMakefiles.name());
       return CmakeGenerator.valueOf(genName);
     }
   }
